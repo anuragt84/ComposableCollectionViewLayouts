@@ -33,15 +33,18 @@
                                             <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qwG-bj-5RB">
-                                                    <rect key="frame" x="166" y="61" width="42" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qwG-bj-5RB">
+                                                    <rect key="frame" x="4" y="14" width="42" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                         </view>
+                                        <constraints>
+                                            <constraint firstItem="qwG-bj-5RB" firstAttribute="centerY" secondItem="d6f-lA-Voo" secondAttribute="centerY" id="5CC-Cg-De6"/>
+                                            <constraint firstItem="qwG-bj-5RB" firstAttribute="centerX" secondItem="d6f-lA-Voo" secondAttribute="centerX" id="9Qf-3l-FlY"/>
+                                        </constraints>
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
