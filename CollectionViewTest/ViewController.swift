@@ -20,10 +20,11 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        let layout = ColorViewFlowLayout()
+        let layoutProviders: [ComposableLayoutProvider] = [FirstCellFadingLayoutProvider(), FirstCellShrinkingLayoutProvider()]
+        let layout = ComposedCollectionViewFlowLayout(layoutProviders: layoutProviders)
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
-        layout.itemSize = CGSize(width: self.view.frame.width, height: 150)
+        layout.itemSize = CGSize(width: self.view.frame.width, height: Constants.ColorCellHeight)
         collectionView.collectionViewLayout = layout
         collectionView.dataSource = self
     }
@@ -58,43 +59,116 @@ extension ViewController: UICollectionViewDataSource {
     
 }
 
-class ColorViewFlowLayout: UICollectionViewFlowLayout {
+protocol ComposableLayoutProvider {
+    func prepare()
+    func adjustItemAttributes(attributes: UICollectionViewLayoutAttributes,
+                              forCollectionView collectionView: UICollectionView,
+                              atIndexPath indexPath: IndexPath)
+    func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool
+}
 
-    private var attributesList = [UICollectionViewLayoutAttributes]()
+class ComposedCollectionViewFlowLayout: UICollectionViewFlowLayout {
+    
+    var layoutProviders = [ComposableLayoutProvider]()
+    var attributesList = [IndexPath: UICollectionViewLayoutAttributes]()
+    
+    init(layoutProviders: [ComposableLayoutProvider]) {
+        self.layoutProviders = layoutProviders
+        
+        super.init()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
-        return true
+        return layoutProviders.reduce(true, { (result, layout) -> Bool in
+            return result && layout.shouldInvalidateLayout(forBoundsChange: newBounds)
+        })
     }
     
     override func prepare() {
         super.prepare()
         
+        for layoutProvider in layoutProviders {
+            layoutProvider.prepare()
+        }
+        
+        guard let collectionView = collectionView else { return }
+        
         attributesList.removeAll(keepingCapacity: true)
-        for item in 0..<collectionView!.numberOfItems(inSection: 0) {
+        for item in 0..<collectionView.numberOfItems(inSection: 0) {
             let indexPath = IndexPath(item: item, section: 0)
             let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
-            var cellOffsetY = CGFloat(indexPath.item) * Constants.ColorCellHeight
-            var alpha = CGFloat(1.0)
-            let contentOffsetY = collectionView!.contentOffset.y
-            let offsetDiff = contentOffsetY - cellOffsetY
-            if offsetDiff > 0 && offsetDiff < Constants.ColorCellHeight {
-                cellOffsetY = contentOffsetY
-                alpha = 1.0 - offsetDiff / Constants.ColorCellHeight
+            attributes.frame = CGRect(x: 0, y: CGFloat(item) * itemSize.height, width: itemSize.width, height: itemSize.height)
+            for layoutProvider in layoutProviders {
+                layoutProvider.adjustItemAttributes(attributes: attributes,
+                                                    forCollectionView: collectionView,
+                                                    atIndexPath: indexPath)
             }
-            let insetX = (1.0 - alpha) * collectionView!.frame.width / 2
-            let insetY = (1.0 - alpha) * Constants.ColorCellHeight / 2
-            attributes.frame = CGRect(x: 0, y: cellOffsetY, width: collectionView!.frame.width, height: Constants.ColorCellHeight).insetBy(dx: insetX, dy: insetY)
-            attributes.alpha = alpha
-            attributes.zIndex = indexPath.item
-            attributesList.append(attributes)
+            attributesList[indexPath] = attributes
         }
     }
     
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
-        return attributesList.filter({ (attributes) -> Bool in
+        return attributesList.values.filter({ (attributes) -> Bool in
             attributes.frame.intersects(rect)
         })
     }
     
 }
 
+struct FirstCellFadingLayoutProvider: ComposableLayoutProvider {
+
+    func prepare() {
+        
+    }
+    
+    func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+        return true
+    }
+    
+    func adjustItemAttributes(attributes: UICollectionViewLayoutAttributes,
+                              forCollectionView collectionView: UICollectionView,
+                              atIndexPath indexPath: IndexPath) {
+        let cellOffsetY = CGFloat(indexPath.item) * Constants.ColorCellHeight
+        var alpha = CGFloat(1.0)
+        let contentOffsetY = collectionView.contentOffset.y
+        let offsetDiff = contentOffsetY - cellOffsetY
+        if offsetDiff > 0 && offsetDiff < Constants.ColorCellHeight {
+            alpha = 1.0 - offsetDiff / Constants.ColorCellHeight
+        }
+        attributes.alpha = alpha
+        attributes.zIndex = indexPath.item
+    }
+    
+}
+
+struct FirstCellShrinkingLayoutProvider: ComposableLayoutProvider {
+    
+    func prepare() {
+        
+    }
+    
+    func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+        return true
+    }
+    
+    func adjustItemAttributes(attributes: UICollectionViewLayoutAttributes,
+                              forCollectionView collectionView: UICollectionView,
+                              atIndexPath indexPath: IndexPath) {
+        var cellOffsetY = CGFloat(indexPath.item) * Constants.ColorCellHeight
+        var shrinkingPercent = CGFloat(0)
+        let contentOffsetY = collectionView.contentOffset.y
+        let offsetDiff = contentOffsetY - cellOffsetY
+        if offsetDiff > 0 && offsetDiff < Constants.ColorCellHeight {
+            cellOffsetY = contentOffsetY
+            shrinkingPercent = offsetDiff / Constants.ColorCellHeight
+        }
+        let insetX = (shrinkingPercent) * collectionView.frame.width / 2
+        let insetY = (shrinkingPercent) * Constants.ColorCellHeight / 2
+        attributes.frame = CGRect(x: 0, y: cellOffsetY, width: collectionView.frame.width, height: Constants.ColorCellHeight).insetBy(dx: insetX, dy: insetY)
+    }
+    
+}
