@@ -98,16 +98,17 @@ class ComposedCollectionViewFlowLayout: UICollectionViewFlowLayout {
         guard let collectionView = collectionView else { return }
         
         attributesList.removeAll(keepingCapacity: true)
-        for item in 0..<collectionView.numberOfItems(inSection: 0) {
-            let indexPath = IndexPath(item: item, section: 0)
-            let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
-            attributes.frame = CGRect(x: 0, y: CGFloat(item) * itemSize.height, width: itemSize.width, height: itemSize.height)
-            for layoutProvider in layoutProviders {
-                layoutProvider.adjustItemAttributes(attributes: attributes,
-                                                    forCollectionView: collectionView,
-                                                    atIndexPath: indexPath)
+        for section in 0..<collectionView.numberOfSections {
+            for item in 0..<collectionView.numberOfItems(inSection: section) {
+                let indexPath = IndexPath(item: item, section: 0)
+                let attributes = layoutAttributesForItem(at: indexPath)!
+                for layoutProvider in layoutProviders {
+                    layoutProvider.adjustItemAttributes(attributes: attributes,
+                                                        forCollectionView: collectionView,
+                                                        atIndexPath: indexPath)
+                }
+                attributesList[indexPath] = attributes
             }
-            attributesList[indexPath] = attributes
         }
     }
     
