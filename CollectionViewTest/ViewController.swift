@@ -100,7 +100,7 @@ class ComposedCollectionViewFlowLayout: UICollectionViewFlowLayout {
         attributesList.removeAll(keepingCapacity: true)
         for section in 0..<collectionView.numberOfSections {
             for item in 0..<collectionView.numberOfItems(inSection: section) {
-                let indexPath = IndexPath(item: item, section: 0)
+                let indexPath = IndexPath(item: item, section: section)
                 let attributes = layoutAttributesForItem(at: indexPath)!
                 for layoutProvider in layoutProviders {
                     layoutProvider.adjustItemAttributes(attributes: attributes,
