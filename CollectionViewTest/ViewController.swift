@@ -20,7 +20,9 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        let layoutProviders: [ComposableLayoutProvider] = [FirstCellFadingLayoutProvider(), FirstCellShrinkingLayoutProvider()]
+        let fadingLayoutProvider = FadingLayoutProvider(offsetCutOffForFade: Constants.ColorCellHeight)
+        let shrinkingLayoutProvider = ShrinkingLayoutProvider(offsetCutOffForShrinking: Constants.ColorCellHeight)
+        let layoutProviders: [ComposableLayoutProvider] = [fadingLayoutProvider, shrinkingLayoutProvider]
         let layout = ComposedCollectionViewFlowLayout(layoutProviders: layoutProviders)
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0

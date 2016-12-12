@@ -86,7 +86,13 @@ class ComposedCollectionViewFlowLayout: UICollectionViewFlowLayout {
     
 }
 
-struct FirstCellFadingLayoutProvider: ComposableLayoutProvider {
+struct FadingLayoutProvider: ComposableLayoutProvider {
+    
+    let offsetCutOffForFade: CGFloat
+    
+    init(offsetCutOffForFade: CGFloat) {
+        self.offsetCutOffForFade = offsetCutOffForFade
+    }
     
     func prepare() {
         
@@ -99,12 +105,12 @@ struct FirstCellFadingLayoutProvider: ComposableLayoutProvider {
     func adjustItemAttributes(attributes: UICollectionViewLayoutAttributes,
                               forCollectionView collectionView: UICollectionView,
                               atIndexPath indexPath: IndexPath) {
-        let cellOffsetY = CGFloat(indexPath.item) * Constants.ColorCellHeight
+        let cellOffsetY = attributes.frame.origin.y
         var alpha = CGFloat(1.0)
         let contentOffsetY = collectionView.contentOffset.y
         let offsetDiff = contentOffsetY - cellOffsetY
-        if offsetDiff > 0 && offsetDiff < Constants.ColorCellHeight {
-            alpha = 1.0 - offsetDiff / Constants.ColorCellHeight
+        if offsetDiff > 0 && offsetDiff < offsetCutOffForFade {
+            alpha = 1.0 - offsetDiff / offsetCutOffForFade
         }
         attributes.alpha = alpha
         attributes.zIndex = indexPath.item
@@ -112,7 +118,13 @@ struct FirstCellFadingLayoutProvider: ComposableLayoutProvider {
     
 }
 
-struct FirstCellShrinkingLayoutProvider: ComposableLayoutProvider {
+struct ShrinkingLayoutProvider: ComposableLayoutProvider {
+    
+    let offsetCutOffForShrinking: CGFloat
+    
+    init(offsetCutOffForShrinking: CGFloat) {
+        self.offsetCutOffForShrinking = offsetCutOffForShrinking
+    }
     
     func prepare() {
         
@@ -125,17 +137,17 @@ struct FirstCellShrinkingLayoutProvider: ComposableLayoutProvider {
     func adjustItemAttributes(attributes: UICollectionViewLayoutAttributes,
                               forCollectionView collectionView: UICollectionView,
                               atIndexPath indexPath: IndexPath) {
-        var cellOffsetY = CGFloat(indexPath.item) * Constants.ColorCellHeight
+        var cellOffsetY = attributes.frame.origin.y
         var shrinkingPercent = CGFloat(0)
         let contentOffsetY = collectionView.contentOffset.y
         let offsetDiff = contentOffsetY - cellOffsetY
-        if offsetDiff > 0 && offsetDiff < Constants.ColorCellHeight {
+        if offsetDiff > 0 && offsetDiff < offsetCutOffForShrinking {
             cellOffsetY = contentOffsetY
-            shrinkingPercent = offsetDiff / Constants.ColorCellHeight
+            shrinkingPercent = offsetDiff / offsetCutOffForShrinking
         }
-        let insetX = (shrinkingPercent) * collectionView.frame.width / 2
-        let insetY = (shrinkingPercent) * Constants.ColorCellHeight / 2
-        attributes.frame = CGRect(x: 0, y: cellOffsetY, width: collectionView.frame.width, height: Constants.ColorCellHeight).insetBy(dx: insetX, dy: insetY)
+        let insetX = (shrinkingPercent) * attributes.frame.size.width / 2
+        let insetY = (shrinkingPercent) * offsetCutOffForShrinking / 2
+        attributes.frame = CGRect(x: 0, y: cellOffsetY, width: attributes.frame.size.width, height: attributes.frame.size.height).insetBy(dx: insetX, dy: insetY)
     }
     
 }
