@@ -10,6 +10,7 @@ import UIKit
 
 struct Constants {
     static let ColorCellHeight = CGFloat(150)
+    static let ColorCellIdentifier = "ColorCellIdentifier"
 }
 
 class ViewController: UIViewController {
@@ -45,7 +46,8 @@ extension ViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let colorCell = collectionView.dequeueReusableCell(withReuseIdentifier: "ColorCellIdentifier", for: indexPath)
+        let colorCell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.ColorCellIdentifier,
+                                                           for: indexPath)
         if let storedColor = colorStore[indexPath] {
             colorCell.backgroundColor = storedColor
         } else {
