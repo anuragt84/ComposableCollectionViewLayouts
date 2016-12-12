@@ -105,10 +105,8 @@ struct FadingLayoutProvider: ComposableLayoutProvider {
     func adjustItemAttributes(attributes: UICollectionViewLayoutAttributes,
                               forCollectionView collectionView: UICollectionView,
                               atIndexPath indexPath: IndexPath) {
-        let cellOffsetY = attributes.frame.origin.y
         var alpha = CGFloat(1.0)
-        let contentOffsetY = collectionView.contentOffset.y
-        let offsetDiff = contentOffsetY - cellOffsetY
+        let offsetDiff = collectionView.contentOffset.y - attributes.frame.origin.y
         if offsetDiff > 0 && offsetDiff < offsetCutOffForFade {
             alpha = 1.0 - offsetDiff / offsetCutOffForFade
         }
