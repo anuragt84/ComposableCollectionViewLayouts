@@ -7,12 +7,16 @@
 //
 
 import UIKit
+import ComposableCollectionViewLayouts
 
 struct Constants {
     static let ColorCellHeight = CGFloat(150)
     static let ColorCellIdentifier = "ColorCellIdentifier"
 }
 
+/// Demo view controller to show how to combine different composable layout providers.
+/// In this example, we are combining a shrinking and a fading layout provider with a yOffset threshold. Any cell with 
+/// a frame.origin.y less than the specified offset will be faded/unfaded and shrunk/unshrunk as the user scrolls up/down.
 class ViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!

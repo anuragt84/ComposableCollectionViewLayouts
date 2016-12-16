@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol ComposableLayoutProvider {
+public protocol ComposableLayoutProvider {
     /// Prepare the layout process
     ///
     /// - Returns:
@@ -33,19 +33,19 @@ protocol ComposableLayoutProvider {
 
 /// Represents a layout that can be composed from a list of layout providers that implement the `ComposableLayoutProvider`
 /// protocol
-class ComposedCollectionViewFlowLayout: UICollectionViewFlowLayout {
+open class ComposedCollectionViewFlowLayout: UICollectionViewFlowLayout {
     
     var layoutProviders = [ComposableLayoutProvider]()
     var attributesList = [IndexPath: UICollectionViewLayoutAttributes]()
     
-    init(layoutProviders: [ComposableLayoutProvider]) {
+    public init(layoutProviders: [ComposableLayoutProvider]) {
         self.layoutProviders = layoutProviders
         
         super.init()
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) shas not been implemented")
     }
     
     open override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
@@ -86,23 +86,23 @@ class ComposedCollectionViewFlowLayout: UICollectionViewFlowLayout {
     
 }
 
-struct FadingLayoutProvider: ComposableLayoutProvider {
+public struct FadingLayoutProvider: ComposableLayoutProvider {
     
     let offsetCutOffForFade: CGFloat
     
-    init(offsetCutOffForFade: CGFloat) {
+    public init(offsetCutOffForFade: CGFloat) {
         self.offsetCutOffForFade = offsetCutOffForFade
     }
     
-    func prepare() {
+    public func prepare() {
         
     }
     
-    func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+    public func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
         return true
     }
     
-    func adjustItemAttributes(attributes: UICollectionViewLayoutAttributes,
+    public func adjustItemAttributes(attributes: UICollectionViewLayoutAttributes,
                               forCollectionView collectionView: UICollectionView,
                               atIndexPath indexPath: IndexPath) {
         var alpha = CGFloat(1.0)
@@ -116,23 +116,23 @@ struct FadingLayoutProvider: ComposableLayoutProvider {
     
 }
 
-struct ShrinkingLayoutProvider: ComposableLayoutProvider {
+public struct ShrinkingLayoutProvider: ComposableLayoutProvider {
     
     let offsetCutOffForShrinking: CGFloat
     
-    init(offsetCutOffForShrinking: CGFloat) {
+    public init(offsetCutOffForShrinking: CGFloat) {
         self.offsetCutOffForShrinking = offsetCutOffForShrinking
     }
     
-    func prepare() {
+    public func prepare() {
         
     }
     
-    func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
+    public func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool {
         return true
     }
     
-    func adjustItemAttributes(attributes: UICollectionViewLayoutAttributes,
+    public func adjustItemAttributes(attributes: UICollectionViewLayoutAttributes,
                               forCollectionView collectionView: UICollectionView,
                               atIndexPath indexPath: IndexPath) {
         var cellOffsetY = attributes.frame.origin.y
