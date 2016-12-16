@@ -14,6 +14,7 @@ public protocol ComposableLayoutProvider {
     ///
     /// - Returns:
     func prepare()
+    
     /// Should adjust the passed in attributes according to the effect desired
     ///
     /// - Parameters:
@@ -24,11 +25,14 @@ public protocol ComposableLayoutProvider {
     func adjustItemAttributes(attributes: UICollectionViewLayoutAttributes,
                               forCollectionView collectionView: UICollectionView,
                               atIndexPath indexPath: IndexPath)
+    
     /// Returns true if the layout should be invalidated
     ///
     /// - Parameter newBounds: The changed bounds
     /// - Returns: See description
     func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool
+    
+    var direction: Direction { get }
 }
 
 /// Represents a layout that can be composed from a list of layout providers that implement the `ComposableLayoutProvider`
@@ -86,12 +90,18 @@ open class ComposedCollectionViewFlowLayout: UICollectionViewFlowLayout {
     
 }
 
+public enum Direction {
+    case vertical, horizontal, none
+}
+
 public struct FadingLayoutProvider: ComposableLayoutProvider {
     
     let offsetCutOffForFade: CGFloat
+    public var direction: Direction
     
-    public init(offsetCutOffForFade: CGFloat) {
+    public init(offsetCutOffForFade: CGFloat, direction: Direction = .vertical) {
         self.offsetCutOffForFade = offsetCutOffForFade
+        self.direction = direction
     }
     
     public func prepare() {
@@ -105,8 +115,11 @@ public struct FadingLayoutProvider: ComposableLayoutProvider {
     public func adjustItemAttributes(attributes: UICollectionViewLayoutAttributes,
                               forCollectionView collectionView: UICollectionView,
                               atIndexPath indexPath: IndexPath) {
+        let isVertical = direction == .vertical
         var alpha = CGFloat(1.0)
-        let offsetDiff = collectionView.contentOffset.y - attributes.frame.origin.y
+        let contentOffset = isVertical ? collectionView.contentOffset.y : collectionView.contentOffset.x
+        let cellOffset = isVertical ? attributes.frame.origin.y : attributes.frame.origin.x
+        let offsetDiff = contentOffset - cellOffset
         if offsetDiff > 0 && offsetDiff < offsetCutOffForFade {
             alpha = 1.0 - offsetDiff / offsetCutOffForFade
         }
@@ -119,9 +132,11 @@ public struct FadingLayoutProvider: ComposableLayoutProvider {
 public struct ShrinkingLayoutProvider: ComposableLayoutProvider {
     
     let offsetCutOffForShrinking: CGFloat
+    public var direction: Direction
     
-    public init(offsetCutOffForShrinking: CGFloat) {
+    public init(offsetCutOffForShrinking: CGFloat, direction: Direction = .vertical) {
         self.offsetCutOffForShrinking = offsetCutOffForShrinking
+        self.direction = direction
     }
     
     public func prepare() {
@@ -135,17 +150,22 @@ public struct ShrinkingLayoutProvider: ComposableLayoutProvider {
     public func adjustItemAttributes(attributes: UICollectionViewLayoutAttributes,
                               forCollectionView collectionView: UICollectionView,
                               atIndexPath indexPath: IndexPath) {
-        var cellOffsetY = attributes.frame.origin.y
+        let isVertical = direction == .vertical
+        var cellOffset = isVertical ? attributes.frame.origin.y : attributes.frame.origin.x
         var shrinkingPercent = CGFloat(0)
-        let contentOffsetY = collectionView.contentOffset.y
-        let offsetDiff = contentOffsetY - cellOffsetY
+        let contentOffset = isVertical ? collectionView.contentOffset.y : collectionView.contentOffset.x
+        let offsetDiff = contentOffset - cellOffset
         if offsetDiff > 0 && offsetDiff < offsetCutOffForShrinking {
-            cellOffsetY = contentOffsetY
+            cellOffset = contentOffset
             shrinkingPercent = offsetDiff / offsetCutOffForShrinking
         }
-        let insetX = (shrinkingPercent) * attributes.frame.size.width / 2
-        let insetY = (shrinkingPercent) * offsetCutOffForShrinking / 2
-        attributes.frame = CGRect(x: 0, y: cellOffsetY, width: attributes.frame.size.width, height: attributes.frame.size.height).insetBy(dx: insetX, dy: insetY)
+        let currentWidth = attributes.frame.size.width
+        let currentHeight = attributes.frame.size.height
+        let insetX = (shrinkingPercent) * currentWidth / 2
+        let insetY = (shrinkingPercent) * currentHeight / 2
+        let x = isVertical ? 0 : cellOffset
+        let y = isVertical ? cellOffset : 0
+        attributes.frame = CGRect(x: x, y: y, width: currentWidth, height: currentHeight).insetBy(dx: insetX, dy: insetY)
     }
     
 }
