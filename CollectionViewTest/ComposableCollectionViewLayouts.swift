@@ -32,6 +32,7 @@ public protocol ComposableLayoutProvider {
     /// - Returns: See description
     func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool
     
+    /// Determines the direction if the layout supports multiple directions
     var direction: Direction { get }
 }
 
