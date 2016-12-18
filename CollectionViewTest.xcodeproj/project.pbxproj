@@ -8,13 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		756F8CFD1DF6E03600470388 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756F8CFC1DF6E03600470388 /* AppDelegate.swift */; };
-		756F8CFF1DF6E03600470388 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756F8CFE1DF6E03600470388 /* ViewController.swift */; };
+		756F8CFF1DF6E03600470388 /* VerticalCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756F8CFE1DF6E03600470388 /* VerticalCollectionViewController.swift */; };
 		756F8D021DF6E03600470388 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 756F8D001DF6E03600470388 /* Main.storyboard */; };
 		756F8D041DF6E03600470388 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 756F8D031DF6E03600470388 /* Assets.xcassets */; };
 		756F8D071DF6E03600470388 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 756F8D051DF6E03600470388 /* LaunchScreen.storyboard */; };
 		756F8D121DF6E03600470388 /* CollectionViewTestTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756F8D111DF6E03600470388 /* CollectionViewTestTests.swift */; };
 		756F8D1D1DF6E03600470388 /* CollectionViewTestUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756F8D1C1DF6E03600470388 /* CollectionViewTestUITests.swift */; };
 		756F8D2C1DF6E1C600470388 /* ColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 756F8D2B1DF6E1C600470388 /* ColorCell.swift */; };
+		75D126D51E062AE00078A5C5 /* CollectionViewTypesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D126D41E062AE00078A5C5 /* CollectionViewTypesViewController.swift */; };
 		BFED7ECC1E038E74004F9289 /* ComposableCollectionViewLayouts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFED7EC31E038E73004F9289 /* ComposableCollectionViewLayouts.framework */; };
 		BFED7ED31E038E74004F9289 /* ComposableCollectionViewLayoutsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFED7ED21E038E74004F9289 /* ComposableCollectionViewLayoutsTests.swift */; };
 		BFED7ED51E038E74004F9289 /* ComposableCollectionViewLayouts.h in Headers */ = {isa = PBXBuildFile; fileRef = BFED7EC51E038E73004F9289 /* ComposableCollectionViewLayouts.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -78,7 +79,7 @@
 /* Begin PBXFileReference section */
 		756F8CF91DF6E03600470388 /* CollectionViewTest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CollectionViewTest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		756F8CFC1DF6E03600470388 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		756F8CFE1DF6E03600470388 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		756F8CFE1DF6E03600470388 /* VerticalCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalCollectionViewController.swift; sourceTree = "<group>"; };
 		756F8D011DF6E03600470388 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		756F8D031DF6E03600470388 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		756F8D061DF6E03600470388 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -90,6 +91,7 @@
 		756F8D1C1DF6E03600470388 /* CollectionViewTestUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewTestUITests.swift; sourceTree = "<group>"; };
 		756F8D1E1DF6E03600470388 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		756F8D2B1DF6E1C600470388 /* ColorCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorCell.swift; sourceTree = "<group>"; };
+		75D126D41E062AE00078A5C5 /* CollectionViewTypesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewTypesViewController.swift; sourceTree = "<group>"; };
 		BF4376901DFE505400BF7D31 /* ComposableCollectionViewLayouts.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ComposableCollectionViewLayouts.swift; path = ../CollectionViewTest/ComposableCollectionViewLayouts.swift; sourceTree = "<group>"; };
 		BFED7EC31E038E73004F9289 /* ComposableCollectionViewLayouts.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ComposableCollectionViewLayouts.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFED7EC51E038E73004F9289 /* ComposableCollectionViewLayouts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ComposableCollectionViewLayouts.h; sourceTree = "<group>"; };
@@ -169,7 +171,8 @@
 			children = (
 				756F8D2A1DF6E1A300470388 /* Cells */,
 				756F8CFC1DF6E03600470388 /* AppDelegate.swift */,
-				756F8CFE1DF6E03600470388 /* ViewController.swift */,
+				756F8CFE1DF6E03600470388 /* VerticalCollectionViewController.swift */,
+				75D126D41E062AE00078A5C5 /* CollectionViewTypesViewController.swift */,
 				756F8D001DF6E03600470388 /* Main.storyboard */,
 				756F8D031DF6E03600470388 /* Assets.xcassets */,
 				756F8D051DF6E03600470388 /* LaunchScreen.storyboard */,
@@ -437,7 +440,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				756F8CFF1DF6E03600470388 /* ViewController.swift in Sources */,
+				756F8CFF1DF6E03600470388 /* VerticalCollectionViewController.swift in Sources */,
+				75D126D51E062AE00078A5C5 /* CollectionViewTypesViewController.swift in Sources */,
 				756F8CFD1DF6E03600470388 /* AppDelegate.swift in Sources */,
 				756F8D2C1DF6E1C600470388 /* ColorCell.swift in Sources */,
 			);
@@ -822,6 +826,7 @@
 				BFED7EDB1E038E74004F9289 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		BFED7EE01E038E74004F9289 /* Build configuration list for PBXNativeTarget "ComposableCollectionViewLayoutsTests" */ = {
 			isa = XCConfigurationList;
@@ -830,6 +835,7 @@
 				BFED7EDD1E038E74004F9289 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  VerticalCollectionViewController.swift
 //  CollectionViewTest
 //
 //  Created by Anurag Tolety on 12/6/16.
@@ -17,7 +17,7 @@ struct Constants {
 /// Demo view controller to show how to combine different composable layout providers.
 /// In this example, we are combining a shrinking and a fading layout provider with a yOffset threshold. Any cell with 
 /// a frame.origin.y less than the specified offset will be faded/unfaded and shrunk/unshrunk as the user scrolls up/down.
-class ViewController: UIViewController {
+class VerticalCollectionViewController: UIViewController {
 
     @IBOutlet weak var collectionView: UICollectionView!
     fileprivate var colorStore = [IndexPath: UIColor]()
@@ -43,7 +43,7 @@ class ViewController: UIViewController {
 
 }
 
-extension ViewController: UICollectionViewDataSource {
+extension VerticalCollectionViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 20
