@@ -1,5 +1,5 @@
 //
-//  VerticalCollectionViewController.swift
+//  ComposedCollectionViewController.swift
 //  CollectionViewTest
 //
 //  Created by Anurag Tolety on 12/6/16.
@@ -10,28 +10,30 @@ import UIKit
 import ComposableCollectionViewLayouts
 
 struct Constants {
-    static let ColorCellHeight = CGFloat(150)
     static let ColorCellIdentifier = "ColorCellIdentifier"
 }
 
 /// Demo view controller to show how to combine different composable layout providers.
 /// In this example, we are combining a shrinking and a fading layout provider with a yOffset threshold. Any cell with 
 /// a frame.origin.y less than the specified offset will be faded/unfaded and shrunk/unshrunk as the user scrolls up/down.
-class VerticalCollectionViewController: UIViewController {
+class ComposedCollectionViewController: UIViewController {
 
+    public var scrollDirection: UICollectionViewScrollDirection = .vertical
     @IBOutlet weak var collectionView: UICollectionView!
     fileprivate var colorStore = [IndexPath: UIColor]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        let fadingLayoutProvider = FadingLayoutProvider(offsetCutOffForFade: Constants.ColorCellHeight)
-        let shrinkingLayoutProvider = ShrinkingLayoutProvider(offsetCutOffForShrinking: Constants.ColorCellHeight)
+        let offsetCutOff = scrollDirection == .vertical ? view.frame.height / 3 : view.frame.width / 3
+        let fadingLayoutProvider = FadingLayoutProvider(offsetCutOffForFade: offsetCutOff, scrollDirection: scrollDirection)
+        let shrinkingLayoutProvider = ShrinkingLayoutProvider(offsetCutOffForShrinking: offsetCutOff, scrollDirection: scrollDirection)
         let layoutProviders: [ComposableLayoutProvider] = [fadingLayoutProvider, shrinkingLayoutProvider]
         let layout = ComposedCollectionViewFlowLayout(layoutProviders: layoutProviders)
+        layout.scrollDirection = scrollDirection
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
-        layout.itemSize = CGSize(width: self.view.frame.width, height: Constants.ColorCellHeight)
+        layout.itemSize = CGSize(width: scrollDirection == .vertical ? view.frame.width : offsetCutOff, height: scrollDirection == .vertical ? offsetCutOff : view.frame.height)
         collectionView.collectionViewLayout = layout
         collectionView.dataSource = self
     }
@@ -43,7 +45,7 @@ class VerticalCollectionViewController: UIViewController {
 
 }
 
-extension VerticalCollectionViewController: UICollectionViewDataSource {
+extension ComposedCollectionViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 20

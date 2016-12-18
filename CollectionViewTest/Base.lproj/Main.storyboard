@@ -9,10 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Vertical Collection View Controller-->
+        <!--Composed Collection View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="VerticalCollectionViewController" customModule="CollectionViewTest" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ComposedCollectionViewController" customModule="CollectionViewTest" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -93,7 +93,7 @@
                     <navigationItem key="navigationItem" id="jU1-kw-aeD"/>
                     <connections>
                         <outlet property="collectionViewTypesTableView" destination="pcO-4G-IhJ" id="OoC-Od-WdG"/>
-                        <segue destination="BYZ-38-t0r" kind="show" identifier="ShowVerticalCollectionView" id="BTh-WT-KgG"/>
+                        <segue destination="BYZ-38-t0r" kind="show" identifier="ShowLinearCollectionView" id="BTh-WT-KgG"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UVJ-tD-tNw" userLabel="First Responder" sceneMemberID="firstResponder"/>

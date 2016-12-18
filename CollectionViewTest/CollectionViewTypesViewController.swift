@@ -9,6 +9,11 @@
 import Foundation
 import UIKit
 
+private extension Constants {
+    static let collectionViewTypeCellIdentifier = "collectionViewTypeCellIdentifier"
+    static let linearCollectionViewSegueIdentifier = "ShowLinearCollectionView"
+}
+
 enum CollectionViewTypesDataSource: Int {
     case vertical, horizontal, circular
     
@@ -29,10 +34,8 @@ enum CollectionViewTypesDataSource: Int {
     var segueIdentifier: String {
         var identifier = ""
         switch self {
-        case .vertical:
-            identifier = "ShowVerticalCollectionView"
-        case .horizontal:
-            identifier = "ShowHorizontalCollectionView"
+        case .vertical, .horizontal:
+            identifier = Constants.linearCollectionViewSegueIdentifier
         case .circular:
             identifier = "ShowCircularCollectionView"
         }
@@ -41,10 +44,6 @@ enum CollectionViewTypesDataSource: Int {
     }
     
     static let count = 3
-}
-
-private extension Constants {
-    static let collectionViewTypeCellIdentifier = "collectionViewTypeCellIdentifier"
 }
 
 class CollectionViewTypesViewController: UIViewController {
@@ -57,6 +56,20 @@ class CollectionViewTypesViewController: UIViewController {
         collectionViewTypesTableView.register(UITableViewCell.classForCoder(), forCellReuseIdentifier: Constants.collectionViewTypeCellIdentifier)
         collectionViewTypesTableView.delegate = self
         collectionViewTypesTableView.dataSource = self
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == Constants.linearCollectionViewSegueIdentifier, let type = sender as? CollectionViewTypesDataSource {
+            let composedCollectionVC = segue.destination as! ComposedCollectionViewController
+            switch type {
+            case .vertical:
+                composedCollectionVC.scrollDirection = .vertical
+            case .horizontal:
+                composedCollectionVC.scrollDirection = .horizontal
+            default:
+                break
+            }
+        }
     }
 }
 
@@ -79,7 +92,7 @@ extension CollectionViewTypesViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let collectionViewType = CollectionViewTypesDataSource(rawValue: indexPath.row)!
-        performSegue(withIdentifier: collectionViewType.segueIdentifier, sender: nil)
+        performSegue(withIdentifier: collectionViewType.segueIdentifier, sender: collectionViewType)
     }
     
 }

@@ -33,7 +33,7 @@ public protocol ComposableLayoutProvider {
     func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool
     
     /// Determines the direction if the layout supports multiple directions
-    var direction: Direction { get }
+    var scrollDirection: UICollectionViewScrollDirection { get }
 }
 
 /// Represents a layout that can be composed from a list of layout providers that implement the `ComposableLayoutProvider`
@@ -91,18 +91,14 @@ open class ComposedCollectionViewFlowLayout: UICollectionViewFlowLayout {
     
 }
 
-public enum Direction {
-    case vertical, horizontal, none
-}
-
 public struct FadingLayoutProvider: ComposableLayoutProvider {
     
     let offsetCutOffForFade: CGFloat
-    public var direction: Direction
+    public var scrollDirection: UICollectionViewScrollDirection
     
-    public init(offsetCutOffForFade: CGFloat, direction: Direction = .vertical) {
+    public init(offsetCutOffForFade: CGFloat, scrollDirection: UICollectionViewScrollDirection = .vertical) {
         self.offsetCutOffForFade = offsetCutOffForFade
-        self.direction = direction
+        self.scrollDirection = scrollDirection
     }
     
     public func prepare() {
@@ -116,7 +112,7 @@ public struct FadingLayoutProvider: ComposableLayoutProvider {
     public func adjustItemAttributes(attributes: UICollectionViewLayoutAttributes,
                               forCollectionView collectionView: UICollectionView,
                               atIndexPath indexPath: IndexPath) {
-        let isVertical = direction == .vertical
+        let isVertical = scrollDirection == .vertical
         var alpha = CGFloat(1.0)
         let contentOffset = isVertical ? collectionView.contentOffset.y : collectionView.contentOffset.x
         let cellOffset = isVertical ? attributes.frame.origin.y : attributes.frame.origin.x
@@ -133,11 +129,11 @@ public struct FadingLayoutProvider: ComposableLayoutProvider {
 public struct ShrinkingLayoutProvider: ComposableLayoutProvider {
     
     let offsetCutOffForShrinking: CGFloat
-    public var direction: Direction
+    public var scrollDirection: UICollectionViewScrollDirection
     
-    public init(offsetCutOffForShrinking: CGFloat, direction: Direction = .vertical) {
+    public init(offsetCutOffForShrinking: CGFloat, scrollDirection: UICollectionViewScrollDirection = .vertical) {
         self.offsetCutOffForShrinking = offsetCutOffForShrinking
-        self.direction = direction
+        self.scrollDirection = scrollDirection
     }
     
     public func prepare() {
@@ -151,7 +147,7 @@ public struct ShrinkingLayoutProvider: ComposableLayoutProvider {
     public func adjustItemAttributes(attributes: UICollectionViewLayoutAttributes,
                               forCollectionView collectionView: UICollectionView,
                               atIndexPath indexPath: IndexPath) {
-        let isVertical = direction == .vertical
+        let isVertical = scrollDirection == .vertical
         var cellOffset = isVertical ? attributes.frame.origin.y : attributes.frame.origin.x
         var shrinkingPercent = CGFloat(0)
         let contentOffset = isVertical ? collectionView.contentOffset.y : collectionView.contentOffset.x
