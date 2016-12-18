@@ -79,8 +79,6 @@ extension CollectionViewTypesViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let collectionViewType = CollectionViewTypesDataSource(rawValue: indexPath.row)!
-        //navigationController?.show(verticalCollectionVC, sender: nil)
-        //navigationController?.performSegue(withIdentifier: collectionViewType.segueIdentifier, sender: nil)
         performSegue(withIdentifier: collectionViewType.segueIdentifier, sender: nil)
     }
     
