@@ -25,7 +25,7 @@ class ComposedCollectionViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        let offsetCutOff = scrollDirection == .vertical ? view.frame.height / 3 : view.frame.width / 3
+        let offsetCutOff = scrollDirection == .vertical ? collectionView.frame.height / 3 : collectionView.frame.width / 3
         let fadingLayoutProvider = FadingLayoutProvider(offsetCutOffForFade: offsetCutOff, scrollDirection: scrollDirection)
         let shrinkingLayoutProvider = ShrinkingLayoutProvider(offsetCutOffForShrinking: offsetCutOff, scrollDirection: scrollDirection)
         let layoutProviders: [ComposableLayoutProvider] = [fadingLayoutProvider, shrinkingLayoutProvider]
@@ -33,7 +33,8 @@ class ComposedCollectionViewController: UIViewController {
         layout.scrollDirection = scrollDirection
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
-        layout.itemSize = CGSize(width: scrollDirection == .vertical ? view.frame.width : offsetCutOff, height: scrollDirection == .vertical ? offsetCutOff : view.frame.height)
+        layout.itemSize = CGSize(width: scrollDirection == .vertical ? collectionView.frame.width : offsetCutOff, height: scrollDirection == .vertical ? offsetCutOff : collectionView.frame.height)
+        edgesForExtendedLayout = []
         collectionView.collectionViewLayout = layout
         collectionView.dataSource = self
     }
